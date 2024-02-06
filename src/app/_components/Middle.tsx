@@ -1,13 +1,14 @@
-import React from 'react'
 
-const Middle = ({text}:{text:string}) => {
+import React from "react";
+
+const Middle = ({ text }: { text: string }) => {
   return (
     <>
-        <div className='w-[70vw] h-[90vh] bg-gray-50 border-8 shadow-2xl border-white relative rounded-2xl'>
-            {text}
-        </div>
+      <div className="relative h-[90vh] w-[70vw] rounded-2xl border-8 border-white bg-gray-50 shadow-2xl">
+        {text}
+      </div >
     </>
-  )
-}
+  );
+};
 
-export default Middle
+export default Middle;

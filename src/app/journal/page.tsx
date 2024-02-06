@@ -3,7 +3,9 @@ import Middle from '../_components/Middle';
 
 const page = () => {
   return (
-    <Middle text="Journal"/>
+    <div className="relative h-[90vh] w-[70vw] rounded-2xl border-8 border-white bg-gray-50 shadow-2xl">
+        Journal
+    </div>
   )
 }
 

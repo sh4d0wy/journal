@@ -4,13 +4,16 @@ import Image from 'next/image'
 import { FaChartLine, FaJournalWhills, FaUserFriends } from 'react-icons/fa'
 import { GiInjustice } from "react-icons/gi";
 import Link from 'next/link';
+import { UserButton, useUser } from '@clerk/nextjs';
 const Sidebar = () => {
     const [active,setActive] = useState(1);
+    const {user} = useUser();
+    console.log(user);
     const links = [{
         id:1,
-        label: "Home",
+        label: "Dashboard",
         icon:<FaChartLine/>,
-        path:"/"
+        path:"/dashboard"
     },{
         id:2,
         label:'Journal',
@@ -33,16 +36,28 @@ const Sidebar = () => {
   return (
     <>
         <div className="w-[20vw] h-[90vh] flex justify-start flex-col bg-gray-50 border-8 p-5 shadow-2xl border-white relative rounded-2xl">
-            <div className="profile w-full flex justify-between gap-10 items-center bg-gray-200 h-auto p-4 rounded-2xl">
-                    <Image src="/image.jpg" className="rounded-full" width={50} height={50} alt="profile"/>
-                    <div className='text-xl font-bold'>Saksham Bhugra</div>
+            <div className="profile shadow-sm w-full flex justify-between gap-10 items-center bg-gray-200 h-auto p-10 rounded-2xl">
+                {user?
+                <>
+                <div className='absolute z-[10] opacity-0'>
+                <UserButton afterSignOutUrl="/signin"/>
+                </div>
+                <Image src={user?user.imageUrl:""} className="rounded-full" width={50} height={50} alt="profile"/>
+                <div className='text-xl font-bold'>{user?.fullName}</div>
+                </>:
+                <>
+                <div>
+                    Loading...
+                </div>
+                </>
+                }
             </div>
             <nav className='flex flex-col mt-10 ml-5 gap-2 mt-4'>
                 {links.map((link)=>(
                     <>
-                    <Link href={link.path}>
+                    <Link key={link.id} href={link.path}>
                     {link.id==active? 
-                    <div key={link.id} className='flex text-xl hover:bg-gray-200 gap-2 hover:cursor-pointer bg-gray-200 w-full pt-3 pl-5 pb-3 rounded-2xl justify-start items-center'>
+                    <div key={link.id} className='flex text-xl shadow-lg hover:bg-gray-200 gap-2 hover:cursor-pointer bg-gray-200 w-full pt-3 pl-5 pb-3 rounded-2xl justify-start items-center'>
                         <div className='text-2xl'>{link.icon}</div>
                         <div className='ml-3'>{link.label}</div>
                     </div>:

@@ -11,13 +11,13 @@ export default {
       keyframes:{
         translateOrb:{
           '0%':{
-            transform:'translateX(0) translateY(0)'
+            transform:'translateX(0px) translateY(0px )'
           },
           '50%':{
-            transform:'translateX(60vw) translateY(30vh)'
+            transform:'translateX(60vw)'
           },
           '100%':{
-            transform:'translateX(0) translateY(0)'
+            transform:'translateX(0px) translateY(0px)'
           }
         }
       },

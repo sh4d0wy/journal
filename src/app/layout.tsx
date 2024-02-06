@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Orb from "./_components/Orb";
 import Sidebar from "./_components/Sidebar";
+import { ClerkProvider, SignedIn } from "@clerk/nextjs";
+import { env } from "process";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,19 +19,27 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
+    <ClerkProvider publishableKey={publishableKey}>
     <html lang="en">
-      <body className={`font-sans ${inter.variable} bg-[url("/bg.png")] h-[100vh] w-[100vw] text-[#5B5075] flex justify-center items-center gap-10`}>
+      <body className={`font-sans ${inter.variable} bg-[url('/bg.png')]`}>
         <TRPCReactProvider>
-          <Sidebar/>
+          <Orb/>
+          <div className=" h-[100vh] w-[100vw] text-[#5B5075] flex justify-center items-center gap-10">
+            <SignedIn>
+              <Sidebar/>
+            </SignedIn>
           {children}
+          </div>
           </TRPCReactProvider>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
