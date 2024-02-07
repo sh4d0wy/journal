@@ -42,7 +42,7 @@ const Sidebar = () => {
                 <div className='absolute z-[10] opacity-0'>
                 <UserButton afterSignOutUrl="/signin"/>
                 </div>
-                <Image src={user?user.imageUrl:""} className="rounded-full" width={50} height={50} alt="profile"/>
+                <Image src={user?user.imageUrl:""} className="rounded-full border-4 border-white shadow-lg" width={60} height={60} alt="profile"/>
                 <div className='text-xl font-bold'>{user?.fullName}</div>
                 </>:
                 <>

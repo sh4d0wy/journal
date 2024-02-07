@@ -19,10 +19,22 @@ export default {
           '100%':{
             transform:'translateX(0px) translateY(0px)'
           }
+        },
+        floating:{
+          '0%':{
+            transform:'translateY(0px)'
+          },
+          '50%':{
+            transform:'translateY(-10px)'
+          },
+          '100%':{
+            transform:'translateY(0px)'
+          }
         }
       },
       animation: {
-        orb: "translateOrb 15s alternate infinite"
+        orb: "translateOrb 15s alternate infinite",
+        float:"floating 3s alternate infinite ease-in-out"
     },
   },
   plugins: [],
