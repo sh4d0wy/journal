@@ -39,6 +39,8 @@ const Sidebar = () => {
           }else{
             console.log(loggedinUser);
             }
+          }).catch((e)=>{
+            console.log(e);
           });
         }
        
