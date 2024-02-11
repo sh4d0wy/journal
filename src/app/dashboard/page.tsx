@@ -69,7 +69,7 @@ const page = () => {
           <div className="box flex h-[20vh] w-[20vw] items-center justify-center gap-5 rounded-2xl bg-white shadow-lg ">
             <div className="text-bold text-2xl font-bold">Total Points</div>
             <CircularProgress size="lg" sx={{
-              fontSize:15,
+              fontSize:12,
               display:"flex",
               justifyContent:"center",
               alignItems:'center'

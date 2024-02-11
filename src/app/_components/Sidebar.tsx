@@ -1,14 +1,51 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Image from 'next/image'
 import { FaChartLine, FaJournalWhills, FaUserFriends } from 'react-icons/fa'
 import { GiInjustice } from "react-icons/gi";
 import Link from 'next/link';
 import { UserButton, useUser } from '@clerk/nextjs';
+import { api } from '~/trpc/react';
+
+type User = {
+    id:number,
+    name:string,
+    email:string,
+    level:number,
+    points:number,
+    pointsToReach:number
+  }
+
 const Sidebar = () => {
     const [active,setActive] = useState(1);
     const {user} = useUser();
-    console.log(user);
+    const [email,setEmail] = useState("");
+    const [loggedinUser,setLoggedinUser] = useState<User | null>(null);
+    const mutation = api.post.createUser.useMutation() // create a user with the name "test"
+    const query = api.post.getUser.useQuery({email:email.length>0?email:""},{
+     refetchOnMount:false,
+      refetchOnReconnect:false,
+      refetchOnWindowFocus:false, 
+      enabled:false,
+    });
+    useEffect(()=>{
+      if(user){
+        setEmail(`${user.emailAddresses[0]?.emailAddress}`);
+        if(email.length>0){
+        query.refetch().then((data)=>{
+          setLoggedinUser(data.data?data.data:null);
+          if(!loggedinUser&&email.length>0){
+            console.log("Creating user")
+          }else{
+            console.log(loggedinUser);
+            }
+          });
+        }
+       
+      }
+    },[email,user,loggedinUser]
+    )
+    // console.log(email);
     const links = [{
         id:1,
         label: "Dashboard",

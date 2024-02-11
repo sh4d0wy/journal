@@ -4,16 +4,39 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(async({ input }) => {
-      const user =await db.user.findMany({
+    createUser: publicProcedure
+    .input(z.object({
+      name:z.string(),
+      email:z.string().email(),
+      level:z.number(),
+      points:z.number(),
+      pointsToReach:z.number(),
+    })
+    )
+    .mutation(async ({input})=>{
+      let user;
+      try{
+        user = await db.user.create({
+        data:{...input}
+      })
+      return user;
+    }catch(e){
+      console.log("Some error occured",e)
+      return
+    }
+    }),
+
+    getUser:publicProcedure
+    .input(z.object({email:z.string()}))
+    .query(async ({input})=>{
+      const user = db.user.findFirst({
         where:{
-          email:input.text
+          email:input.email
         }
       })
-      return  { greetings: `Hello ${user[0]?.name}!` };
-      }),
+      return user;
+    })
+
 });
        
 
