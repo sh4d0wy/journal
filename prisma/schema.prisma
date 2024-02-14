@@ -17,5 +17,7 @@ model User {
     level           Int
     points          Int
     pointsToReach   Int
+    labels          DateTime[] @db.Date
+    graphData       Int[]
     @@index([name])
 }

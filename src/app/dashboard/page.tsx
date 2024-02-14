@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Middle from "../_components/Middle";
 import Image from "next/image";
 import CircularProgress from "@mui/joy/CircularProgress";
 import { Line } from "react-chartjs-2";
+import { useSnapshot } from "valtio";
+import {userData} from '../_utils/states';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,7 +28,9 @@ ChartJS.register(
   Title,
   Legend
 );
+
 const page = () => {
+  const snap = useSnapshot(userData);
   const options = {
     plugins: {
       responsive:true,
@@ -58,13 +63,13 @@ const page = () => {
         <div className="mb-10 flex gap-10">
           <div className="box flex h-[20vh] w-[20vw] items-center justify-center gap-3 rounded-2xl bg-white px-5 shadow-lg ">
             <Image
-              src="/levels/level3.png"
+              src={"/levels/level"+snap.level+".png"}
               className="animate-float"
               width={70}
               height={70}
               alt="Level 1"
             />
-            <div className="text-bold text-3xl font-bold">Level 1</div>
+            <div className="text-bold text-3xl font-bold">Level {snap.level}</div>
           </div>
           <div className="box flex h-[20vh] w-[20vw] items-center justify-center gap-5 rounded-2xl bg-white shadow-lg ">
             <div className="text-bold text-2xl font-bold">Total Points</div>
@@ -73,19 +78,19 @@ const page = () => {
               display:"flex",
               justifyContent:"center",
               alignItems:'center'
-            }} determinate value={(7 / 10) * 100}>
-              7 / 10
+            }} determinate value={(snap.points/snap.pointsToReach ) * 100}>
+              {snap.points} / {snap.pointsToReach}
             </CircularProgress>
           </div>
         </div>
         <div className="chart box flex h-[50vh] w-[45vw] items-center justify-center rounded-2xl bg-white p-10 shadow-xl ">
           <Line
             data={{
-              labels: ["01/02", "02/02", "03/02", "03/02"],
+              labels: userData.lables,
               datasets: [
                 {
                   label:"No of Tasks",
-                  data: [4, 8, 6, 7],
+                  data: snap.graphData,
                   borderColor: "rgba(53, 162, 235, 1)",
                   pointBorderColor:'rgba(53, 162, 235, 1)',
                   pointRadius:5,

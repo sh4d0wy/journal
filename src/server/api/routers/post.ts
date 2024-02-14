@@ -1,3 +1,4 @@
+import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -11,6 +12,8 @@ export const postRouter = createTRPCRouter({
       level:z.number(),
       points:z.number(),
       pointsToReach:z.number(),
+      lables:z.array(z.date()),
+      graphData:z.array(z.number())
     })
     )
     .mutation(async ({input})=>{
@@ -22,7 +25,7 @@ export const postRouter = createTRPCRouter({
       return user;
     }catch(e){
       console.log("Some error occured",e)
-      return
+      throw new TRPCClientError("User exists");
     }
     }),
 
@@ -35,7 +38,8 @@ export const postRouter = createTRPCRouter({
         }
       })
       return user;
-    })
+    }),
+
 
 });
        
