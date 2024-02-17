@@ -53,7 +53,7 @@
               level: 1,
               points: 0,
               pointsToReach: 10,
-              lables: [],
+              labels: [],
               graphData:[]
             })
             } 
@@ -61,6 +61,7 @@
       }, [email, user]);
 
       if(loggedinUser){
+        userData.id = loggedinUser.id,
         userData.username = loggedinUser.name;
         userData.level = loggedinUser.level;
         userData.points = loggedinUser.points;

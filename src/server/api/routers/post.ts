@@ -12,7 +12,7 @@ export const postRouter = createTRPCRouter({
       level:z.number(),
       points:z.number(),
       pointsToReach:z.number(),
-      lables:z.array(z.date()),
+      labels:z.array(z.date()),
       graphData:z.array(z.number())
     })
     )
@@ -38,27 +38,33 @@ export const postRouter = createTRPCRouter({
         }
       })
       return user;
-    }),
+    }),  
 
-
+    updatePoints:publicProcedure
+    .input(z.object({
+      id:z.number(),
+      type:z.string()
+    })
+    )
+    .mutation(async({input})=>{
+      let points;
+      if(input.type==="task"){
+        points = 10;
+      }else{
+        points = 20;
+      }
+     try{await db.user.update({
+        where:{
+          id:input.id
+        },
+        data:{
+          points: points
+        }
+      })
+    }catch(e){
+      console.log(e);
+      throw new TRPCClientError("Error updating points")
+    }
+    })
 });
        
-
-  // create: publicProcedure
-  //   .input(z.object({ name: z.string().min(1) }))
-  //   .mutation(async ({ ctx, input }) => {
-  //     // simulate a slow db call
-  //     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //     return ctx.db.post.create({
-  //       data: {
-  //         name: input.name,
-  //       },
-  //     });
-  //   }),
-
-  // getLatest: publicProcedure.query(({ ctx }) => {
-  //   return ctx.db.post.findFirst({
-  //     orderBy: { createdAt: "desc" },
-  //   });
-  // }),

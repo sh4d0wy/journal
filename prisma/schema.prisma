@@ -21,3 +21,10 @@ model User {
     graphData       Int[]
     @@index([name])
 }
+
+model tasks{
+    tasks       String  @unique
+    type        String
+    doneAt      String
+    userId      Int     
+}
