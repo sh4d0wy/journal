@@ -23,10 +23,16 @@ const page =() => {
   })
   const mutation = api.task.addTask.useMutation({
     onSuccess:((data)=>{
+      userData.points+=1;
       alert("Task added successfully");
       query.refetch().then((tasks)=>{
-        console.log(tasks.data?tasks.data[0]:tasks.data)
+        if(tasks.data){
+          setApiData({data:tasks.data});
+        }
       })
+    }),
+    onError:(()=>{
+      alert("Error creating task")
     })
   }); 
   const query = api.task.getTasks.useQuery({id:snap.id},{
@@ -35,6 +41,7 @@ const page =() => {
     refetchOnWindowFocus:false,
     enabled:false,
   })
+
   const handleTask = ()=>{
     mutation.mutate({
       tasks:data.tasks,
@@ -46,16 +53,16 @@ const page =() => {
   const [apidata,setApiData] = useState<tasks|null>(null);
   
   useEffect(()=>{
-    if(snap.id>0){
+    if(snap.id>0) {
       query.refetch().then((arr)=>{
         if(arr.data){
           setApiData({data:arr.data})
+         
         }
-
-      });
+      });       
     }
   },[snap.id]);
-  
+  console.log(snap.points);
   return (
     <div className="relative h-[90vh] w-[70vw] rounded-2xl border-8 border-white bg-gray-50 shadow-2xl">
       <div className='flex flex-col items-center gap-4 justify-start pt-16 pb-4'>
@@ -81,14 +88,16 @@ const page =() => {
           })
         }}/>
         <button onClick={handleTask}>Add Task</button>
+        </div>
         {apidata&&
           <>
             <div>
-              <span className='font-lg text-red-500'>{apidata.data[1]?.tasks}</span>
+              {apidata?.data.slice(0).reverse().map((item,index)=>(
+                 <p className='text-lg text-red-500'>{item.tasks}</p>
+              ))}
             </div>
           </>
         } 
-        </div>
     </div>
   )
 }

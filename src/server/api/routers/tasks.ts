@@ -19,6 +19,16 @@ export const taskRouter = createTRPCRouter({
         await db.tasks.create({
           data: { ...input },
         });
+        if(input.type==="normal"){
+          await db.user.update({
+            where:{
+              id:input.userId
+            },
+            data:{
+              points:{increment:1}
+            }
+          })
+        }
         return {data:input};
       } catch (e) {
         console.log(e);
