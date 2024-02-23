@@ -49,22 +49,50 @@ export const postRouter = createTRPCRouter({
     .mutation(async({input})=>{
       let points;
       if(input.type==="task"){
-        points = 10;
+        points = 1;
       }else{
-        points = 20;
+        points = 2;
       }
-     try{await db.user.update({
+      const user = await db.user.findFirst({
         where:{
           id:input.id
-        },
-        data:{
-          points: points
         }
       })
-    }catch(e){
-      console.log(e);
-      throw new TRPCClientError("Error updating points")
-    }
+      if(user?.points){
+        points = user?.points + points
+      }
+      if(user?.pointsToReach == points){
+        try{
+          await db.user.update({
+            where:{
+              id:input.id
+            },
+            data:{
+              level:{increment:1},
+              points:0,
+              pointsToReach:{multiply:user?.level}
+            }
+          })
+          return ({success:true,updated:"level"})
+        }catch(e){
+          console.log(e);
+          throw new Error("Failed to update userdata");
+        }
+      }else{
+        try{await db.user.update({
+           where:{
+             id:input.id
+           },
+           data:{
+             points: 10
+           }
+         })
+         return ({success:true,updated: "Points"});
+       }catch(e){
+         console.log(e);
+         throw new TRPCClientError("Error updating points")
+       }
+      }
     })
 });
        

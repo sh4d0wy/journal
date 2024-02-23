@@ -21,10 +21,25 @@ const page =() => {
     type:"",
     date:1
   })
+  const userQuery = api.post.getUser.useQuery({email:snap.email},{
+    enabled:false,
+    refetchOnMount:false,
+    refetchOnReconnect:false,
+    refetchOnWindowFocus:false
+  })
   const mutation = api.task.addTask.useMutation({
     onSuccess:((data)=>{
-      userData.points+=1;
       alert("Task added successfully");
+      userQuery.refetch().then((data)=>{
+        if(data.data){
+          userData.points = data.data.points;
+          userData.level = data.data.level;
+          userData.pointsToReach = data.data.pointsToReach;
+        }
+      })
+      if(data?.updated=="level"){
+        alert("Congratulations Level upgraded");
+      }
       query.refetch().then((tasks)=>{
         if(tasks.data){
           setApiData({data:tasks.data});

@@ -34,6 +34,7 @@ const Sidebar = () => {
             userData.level = loggedinUser.data.level;
             userData.points = loggedinUser.data.points;
             userData.pointsToReach = loggedinUser.data.pointsToReach;
+            userData.email = loggedinUser.data.email;
           }
         })
         .catch((e) => {
@@ -47,6 +48,7 @@ const Sidebar = () => {
         userData.level = data.level;
         userData.points = data.points;
         userData.pointsToReach = data.pointsToReach;
+        userData.email = data.email;
       }
       console.log("User created ", data);
     },

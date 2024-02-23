@@ -7,5 +7,6 @@ export const userData = proxy({
   points:0,
   pointsToReach:0,
   lables:[],
-  graphData:[]
+  graphData:[],
+  email:''
 })
